@@ -8,6 +8,7 @@ import com.example.tjphoto.vo.MemberVO;
 
 import lombok.RequiredArgsConstructor;
 
+
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
