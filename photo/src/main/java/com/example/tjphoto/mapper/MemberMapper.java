@@ -1,4 +1,4 @@
-package mappers;
+package com.example.tjphoto.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
