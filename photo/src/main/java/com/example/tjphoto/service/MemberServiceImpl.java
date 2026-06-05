@@ -8,7 +8,7 @@ import com.example.tjphoto.vo.MemberVO;
 
 import lombok.RequiredArgsConstructor;
 
-
+//변경전
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
