@@ -5,47 +5,32 @@
 
 <mapper namespace="com.example.tjphoto.mapper.MemberMapper">
 
-    <resultMap id="memberMap" type="com.example.tjphoto.vo.MemberVO">
-        <id property="loginId" column="login_id"/>
-        <result property="name" column="name"/>
-        <result property="password" column="password"/>
-        <result property="address" column="address"/>
-        <result property="phone" column="phone"/>
-        <result property="email" column="email"/>
-    </resultMap>
-    
     <insert id="insertMember">
         INSERT INTO member (
-            login_id,
-            name,
+            username,
             password,
-            address,
-            phone,
-            email
+            name,
+            role
         )
         VALUES (
-            #{loginId},
-            #{name},
+            #{username},
             #{password},
-            #{address},
-            #{phone},
-            #{email}
+            #{name},
+            #{role}
         )
     </insert>
 
-    <select id="findByLoginId"
+    <select id="findByUserName"
             parameterType="string"
-            resultMap="memberMap"> 
+            resultType="com.example.tjphoto.vo.MemberVO"> 
         SELECT
-            login_id,
-            name,
+            id,
+            username,
             password,
-            address,
-            phone,
-            email,
+            name,
             role
         FROM member
-        WHERE login_id = #{loginId}
+        WHERE username = #{username}
     </select>
 
 </mapper>

@@ -6,6 +6,6 @@ import com.example.tjphoto.vo.MemberVO;
 
 @Mapper
 public interface MemberMapper {
-    MemberVO findByLoginId(String loginId);
+    MemberVO findByUserName(String loginId);
     void insertMember(MemberVO membervo);
 }

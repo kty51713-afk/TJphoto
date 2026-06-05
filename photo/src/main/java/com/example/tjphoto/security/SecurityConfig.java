@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -11,11 +13,16 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             // 1. 페이지별 접근 권한 설정
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/", "/login", "/signup", "/css/**", "/js/**").permitAll() // 메인, 로그인, 가입, CSS는 로그인 없이 허용
+                .requestMatchers("/", "/login", "/join", "/css/**", "/js/**").permitAll() // 메인, 로그인, 가입, CSS는 로그인 없이 허용
                 .anyRequest().authenticated() // 그 외 사진첩 같은 곳은 로그인 필요
             )
             // 2. 로그인 설정 (우리가 만든 화면으로 교체)

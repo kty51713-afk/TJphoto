@@ -18,9 +18,9 @@ public class MainController {
         return "login/login";
     }
     
-    @GetMapping("/signup")
+    @GetMapping("/join")
     public String signup() {
-    return "login/signup"; 
+    return "login/join"; 
 }
 
     
