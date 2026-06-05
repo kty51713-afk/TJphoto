@@ -9,14 +9,12 @@
         INSERT INTO member (
             username,
             password,
-            name,
-            role
+            name
         )
         VALUES (
             #{username},
             #{password},
-            #{name},
-            #{role}
+            #{name}
         )
     </insert>
 

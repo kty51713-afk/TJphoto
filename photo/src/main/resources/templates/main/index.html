@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko">
+<!-- 1. 시큐리티 네임스페이스(xmlns:sec)를 반드시 추가해야 sec: 태그가 작동합니다 -->
+<html lang="ko" xmlns:th="http://thymeleaf.org"
+                xmlns:sec="http://thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,31 +11,55 @@
 </head>
 <body>
 
-    <!-- 가상 로그인 테스트 바 -->
-    <div class="demo-bar">
-        현재 상태: <span id="status-text" style="color: #ff6b6b; font-weight: bold;">로그인 전 (메뉴 차단됨)</span>
-        <button onclick="toggleLogin()">로그인 상태 가상 토글</button>
-    </div>
+    <!-- 가상 로그인 테스트 바 제거 (실제 서버 세션으로 구동되므로 불필요) -->
 
-    <!-- 1. HEADER (서버 환경에 따라 th:replace 또는 include 등으로 교체 가능) -->
+    <!-- 1. HEADER -->
     <div id="header-container">
-        <!-- 임시 포함용 인라인 삽입 (추후 백엔드 문법으로 대체) -->
         <header>
-            <div class="logo">TJphoto</div>
+            <div class="logo" th:onclick="location.href='/'">TJphoto</div>
+            
             <ul class="nav-menu">
-                <li><a th:href="@{/notice}" class="auth-required disabled-menu" onclick="alert('로그인이 필요한 서비스입니다.'); return false;">공지사항</a></li>
-                <li><a th:href="@{/gallery}" class="auth-required disabled-menu" onclick="alert('로그인이 필요한 서비스입니다.'); return false;">사진첩</a></li>
+                <!-- [비로그인 상태] 메뉴 차단 및 알림창 -->
+                <li sec:authorize="isAnonymous()">
+                    <a th:href="@{/notice}" class="auth-required disabled-menu" onclick="alert('로그인이 필요한 서비스입니다.'); return false;">공지사항</a>
+                </li>
+                <li sec:authorize="isAnonymous()">
+                    <a th:href="@{/gallery}" class="auth-required disabled-menu" onclick="alert('로그인이 필요한 서비스입니다.'); return false;">사진첩</a>
+                </li>
+
+                <!-- [로그인 상태] 메뉴 활성화 -->
+                <li sec:authorize="isAuthenticated()">
+                    <a th:href="@{/notice}">공지사항</a>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <a th:href="@{/gallery}">사진첩</a>
+                </li>
             </ul>
+            
             <ul class="auth-menu">
-                <li><a th:href="@{/login}" class="btn-auth btn-login">로그인</a></li>
-                <li><a th:href="@{/join}" class="btn-auth btn-signup">회원가입</a></li>
+                <!-- [비로그인 상태] 로그인 / 회원가입 버튼 -->
+                <li sec:authorize="isAnonymous()"><a th:href="@{/login}" class="btn-auth btn-login">로그인</a></li>
+                <li sec:authorize="isAnonymous()"><a th:href="@{/signup}" class="btn-auth btn-signup">회원가입</a></li>
+                
+                <!-- [로그인 상태] 마이페이지 / 로그아웃 버튼 -->
+                <li sec:authorize="isAuthenticated()">
+                    <span style="margin-right: 15px; color: #333; font-weight: bold;">
+                        <span sec:authentication="name">사용자</span>님
+                    </span>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post" style="display: inline;">
+                        <button type="submit" class="btn-auth btn-login" style="background: none; border: none; cursor: pointer; font: inherit;">로그아웃</button>
+                    </form>
+                </li>
             </ul>
         </header>
     </div>
 
     <!-- 2. MAIN CONTENTS -->
     <main>
-        <div class="welcome-container" id="welcome-message">
+        <!-- [비로그인 상태] 메인 메시지 -->
+        <div class="welcome-container" id="welcome-message" sec:authorize="isAnonymous()">
             <h1>📸 당신의 소중한 순간을 보관하세요</h1>
             <p>
                 안녕하세요! <strong>TJphoto</strong> 사진첩에 오신 것을 진심으로 환영합니다.<br>
@@ -42,6 +68,17 @@
                 우측 상단의 로그인 또는 회원가입을 통해 더 많은 기능을 이용해 보세요!
             </p>
             <a th:href="@{/login}" class="btn-auth btn-signup" style="display: inline-block;">지금 시작하기</a>
+        </div>
+
+        <!-- [로그인 상태] 메인 메시지 분기 처리 -->
+        <div class="welcome-container" id="welcome-message" sec:authorize="isAuthenticated()">
+            <h1>👋 환영합니다, <span sec:authentication="name" style="color: #2ecc71;">회원</span>님!</h1>
+            <p>
+                성공적으로 로그인이 완료되었습니다.<br>
+                이제 상단 메뉴를 통해 <strong>공지사항</strong>과 <strong>사진첩</strong>을 자유롭게 이용하실 수 있습니다.<br><br>
+                소중한 추억들을 마음껏 업로드하고 감상해 보세요!
+            </p>
+            <a th:href="@{/gallery}" class="btn-auth btn-signup" style="display: inline-block;">사진첩 바로가기</a>
         </div>
     </main>
 
@@ -58,29 +95,6 @@
         </footer>
     </div>
 
-    <script>
-        // 프론트엔드 상태 제어용 스크립트
-        let isLoggedIn = false;
-
-        function toggleLogin() {
-            isLoggedIn = !isLoggedIn;
-            const statusText = document.getElementById('status-text');
-            const welcomeMsg = document.getElementById('welcome-message');
-            const menuItems = document.querySelectorAll('.auth-required');
-
-            if (isLoggedIn) {
-                statusText.innerText = "로그인 완료 (메뉴 활성화)";
-                statusText.style.color = "#2ecc71";
-                welcomeMsg.innerHTML = "<h1>👋 환영합니다, 회원님!</h1><p>이제 상단 메뉴를 통해 공지사항과 사진첩을 자유롭게 이용하실 수 있습니다.</p>";
-                
-                menuItems.forEach(item => {
-                    item.classList.remove('disabled-menu');
-                    item.removeAttribute('onclick');
-                });
-            } else {
-                location.reload();
-            }
-        }
-    </script>
+    <!-- 가상 상태 제어 스크립트 제거 (서버가 동적 제어하므로 자바스크립트 불필요) -->
 </body>
 </html>

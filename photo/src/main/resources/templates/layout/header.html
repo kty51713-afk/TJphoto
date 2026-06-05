@@ -1,15 +1,47 @@
-<!-- 헤더 네비게이션 바 조각 -->
-<header>
-    <div class="logo" onclick="location.href='/'">TJphoto</div>
+<!-- 상단에 시큐리티 네임스페이스(xmlns:sec)를 반드시 추가해야 태그가 작동합니다 -->
+<header xmlns:th="http://thymeleaf.org"
+        xmlns:sec="http://thymeleaf.org/extras/spring-security">
+        
+    <div class="logo" th:onclick="location.href='/'">TJphoto</div>
     
-    <!-- 로그인 전 차단용 disabled-menu 기본 적용 -->
     <ul class="nav-menu">
-        <li><a href="/notice" class="auth-required disabled-menu" onclick="alert('로그인이 필요한 서비스입니다.'); return false;">공지사항</a></li>
-        <li><a href="/gallery" class="auth-required disabled-menu" onclick="alert('로그인이 필요한 서비스입니다.'); return false;">사진첩</a></li>
+        <!-- [CASE 1] 로그인 안 된 상태 (손님) -->
+        <!-- 클릭 시 알림창을 띄우고 로그인을 유도합니다 -->
+        <li sec:authorize="isAnonymous()">
+            <a href="/notice" class="auth-required disabled-menu" onclick="alert('로그인이 필요한 서비스입니다.'); return false;">공지사항</a>
+        </li>
+        <li sec:authorize="isAnonymous()">
+            <a href="/gallery" class="auth-required disabled-menu" onclick="alert('로그인이 필요한 서비스입니다.'); return false;">사진첩</a>
+        </li>
+
+        <!-- [CASE 2] 로그인 된 상태 (인증된 회원) -->
+        <!-- 정상적으로 링크가 작동하며 차단용 클래스와 onclick 이벤트를 제거했습니다 -->
+        <li sec:authorize="isAuthenticated()">
+            <a th:href="@{/notice}">공지사항</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+            <a th:href="@{/gallery}">사진첩</a>
+        </li>
     </ul>
     
     <ul class="auth-menu">
-        <li><a th:href="@{/login}" class="btn-auth btn-login">로그인</a></li>
-        <li><a th:href="@{/signup}" class="btn-auth btn-signup">회원가입</a></li>
+        <!-- [CASE 1] 로그인 안 된 상태 -> 로그인 / 회원가입 버튼 노출 -->
+        <li sec:authorize="isAnonymous()"><a th:href="@{/login}" class="btn-auth btn-login">로그인</a></li>
+        <li sec:authorize="isAnonymous()"><a th:href="@{/signup}" class="btn-auth btn-signup">회원가입</a></li>
+        
+        <!-- [CASE 2] 로그인 된 상태 -> 마이페이지 / 로그아웃 버튼 노출 -->
+        <!-- sec:authentication="name" 태그가 현재 로그인한 회원의 아이디를 텍스트로 넣어줍니다 -->
+        <li sec:authorize="isAuthenticated()">
+            <span style="margin-right: 15px; color: #333; font-weight: bold;">
+                <span sec:authentication="name">사용자</span>님
+            </span>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+            <!-- 시큐리티의 CSRF 방어를 위해 로그아웃은 POST 방식의 폼 전송이 가장 안전합니다 -->
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" class="btn-auth btn-login" style="background: none; border: none; cursor: pointer; font: inherit;">로그아웃</button>
+            </form>
+        </li>
     </ul>
 </header>
+

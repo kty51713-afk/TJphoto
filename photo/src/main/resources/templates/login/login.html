@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인 - TJphoto</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <style>
-        /* (기존 전용 스타일 코드와 동일하여 가독성을 위해 중략합니다) */
         .login-body { background-color: #f8f9fa; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
         .login-card { background: #ffffff; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); width: 100%; max-width: 420px; text-align: center; }
         .login-header h2 { font-size: 28px; color: #2c3e50; margin-bottom: 10px; font-weight: 700; }
@@ -24,6 +23,26 @@
         .signup-hint { margin-top: 25px; font-size: 14px; color: #7f8c8d; }
         .signup-hint a { color: #4a90e2; text-decoration: none; font-weight: 600; margin-left: 5px; }
         .signup-hint a:hover { text-decoration: underline; }
+
+        /* [추가] 로그인 실패 에러 메시지 전용 스타일 설정 */
+        .error-box {
+            background-color: #fdf2f2;
+            color: #ec5858;
+            border: 1px solid #fbcbcb;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+        .error-box::before {
+            content: "⚠️";
+            margin-right: 8px;
+            font-size: 15px;
+        }
     </style>
 </head>
 <body class="login-body">
@@ -33,24 +52,29 @@
             <h2 onclick="location.href='/'" style="cursor: pointer;">TJphoto</h2>
             <p>소중한 추억을 찾아 오신 것을 환영합니다.</p>
         </div>
-    <form th:action="@{/login}" method="POST">
         
-        <!-- 아이디 입력 상자 -->
-        <div class="input-group">
-            <label for="username">아이디</label>
-            <input type="text" id="username" name="username" class="input-field" placeholder="아이디를 입력하세요" required>
-        </div>
-        
-        <!-- 비밀번호 입력 상자 -->
-        <div class="input-group">
-            <label for="password">비밀번호</label>
-            <input type="password" id="password" name="password" class="input-field" placeholder="비밀번호를 입력하세요" required>
-        </div>
-        
-        <button type="submit" class="submit-btn">로그인</button>
-    </form>
-
-
+        <form th:action="@{/login-process}" method="POST">
+            
+            <!-- [핵심 수정] 로그인 실패 시 자동으로 생성되는 ?error 주소를 감지해 빨간 경고창 출력 -->
+            <div th:if="${param.error}" class="error-box">
+                아이디 또는 비밀번호가 올바르지 않습니다.
+            </div>
+            
+            <!-- 아이디 입력 상자 -->
+            <div class="input-group">
+                <label for="username">아이디</label>
+                <input type="text" id="username" name="username" class="input-field" placeholder="아이디를 입력하세요" required>
+            </div>
+            
+            <!-- 비밀번호 입력 상자 -->
+            <div class="input-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" class="input-field" placeholder="비밀번호를 입력하세요" required>
+            </div>
+            
+            <!-- 기존 클래스명 매칭 버그 수정 (submit-btn -> btn-submit) -->
+            <button type="submit" class="btn-submit">로그인</button>
+        </form>
 
         <div class="signup-hint">
             아직 회원이 아니신가요? <a th:href="@{/join}">회원가입 하기</a>
