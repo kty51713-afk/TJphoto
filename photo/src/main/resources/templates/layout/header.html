@@ -27,7 +27,7 @@
     <ul class="auth-menu">
         <!-- [CASE 1] 로그인 안 된 상태 -> 로그인 / 회원가입 버튼 노출 -->
         <li sec:authorize="isAnonymous()"><a th:href="@{/login}" class="btn-auth btn-login">로그인</a></li>
-        <li sec:authorize="isAnonymous()"><a th:href="@{/signup}" class="btn-auth btn-signup">회원가입</a></li>
+        <li sec:authorize="isAnonymous()"><a th:href="@{/join}" class="btn-auth btn-signup">회원가입</a></li>
         
         <!-- [CASE 2] 로그인 된 상태 -> 마이페이지 / 로그아웃 버튼 노출 -->
         <!-- sec:authentication="name" 태그가 현재 로그인한 회원의 아이디를 텍스트로 넣어줍니다 -->
