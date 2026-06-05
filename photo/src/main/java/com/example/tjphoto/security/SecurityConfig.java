@@ -29,14 +29,16 @@ public class SecurityConfig {
             .formLogin(form -> form
                 .loginPage("/login") // 로그인 주소를 /login으로 지정
                 .loginProcessingUrl("/login-process") // 로그인 제출 주소
-                .defaultSuccessUrl("/", true) // 로그인 성공 시 메인으로 이동
+                .defaultSuccessUrl("/photos", true) // 로그인 성공 시 메인으로 이동
                 .permitAll()
+                
             )
             // 3. 로그아웃 설정
             .logout(logout -> logout
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
                 .permitAll()
+
             );
 
         return http.build();
