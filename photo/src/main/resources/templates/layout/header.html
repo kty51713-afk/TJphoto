@@ -1,0 +1,15 @@
+<!-- 헤더 네비게이션 바 조각 -->
+<header>
+    <div class="logo" onclick="location.href='/'">TJphoto</div>
+    
+    <!-- 로그인 전 차단용 disabled-menu 기본 적용 -->
+    <ul class="nav-menu">
+        <li><a href="/notice" class="auth-required disabled-menu" onclick="alert('로그인이 필요한 서비스입니다.'); return false;">공지사항</a></li>
+        <li><a href="/gallery" class="auth-required disabled-menu" onclick="alert('로그인이 필요한 서비스입니다.'); return false;">사진첩</a></li>
+    </ul>
+    
+    <ul class="auth-menu">
+        <li><a href="/login" class="btn-auth btn-login">로그인</a></li>
+        <li><a href="/signup" class="btn-auth btn-signup">회원가입</a></li>
+    </ul>
+</header>

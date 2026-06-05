@@ -1,0 +1,54 @@
+/* 기본 스타일 리셋 */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background-color: #f8f9fa; color: #333; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* 1. 헤더 네비게이션 바 */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.logo { font-size: 24px; font-weight: bold; color: #4a90e2; cursor: pointer; }
+
+/* 중앙 메뉴 */
+.nav-menu { display: flex; list-style: none; gap: 30px; }
+.nav-menu a { text-decoration: none; color: #555; font-weight: 500; transition: color 0.2s; }
+.nav-menu a:hover { color: #4a90e2; }
+
+/* 우측 상단 회원 메뉴 */
+.auth-menu { display: flex; list-style: none; gap: 15px; align-items: center; }
+.auth-menu a { text-decoration: none; color: #666; font-size: 14px; }
+.btn-auth { padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500; }
+.btn-login { background-color: transparent; color: #4a90e2; border: 1px solid #4a90e2; }
+.btn-login:hover { background-color: #f0f7ff; }
+.btn-signup { background-color: #4a90e2; color: white !important; }
+.btn-signup:hover { background-color: #357abd; }
+
+/* 접근 제한 경고 스타일 */
+.disabled-menu { opacity: 0.5; cursor: not-allowed !important; pointer-events: none; }
+
+/* 2. 메인 콘텐츠 영역 */
+main { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px; }
+.welcome-container { text-align: center; max-width: 600px; padding: 40px; background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+.welcome-container h1 { font-size: 32px; color: #2c3e50; margin-bottom: 20px; }
+.welcome-container p { font-size: 16px; color: #7f8c8d; line-height: 1.6; margin-bottom: 30px; }
+
+/* 3. 푸터 영역 */
+footer {
+    background-color: #ffffff;
+    color: #7f8c8d;
+    padding: 20px 40px;
+    font-size: 14px;
+    border-top: 1px solid #edf2f7;
+}
+.footer-content { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; width: 100%; }
+.footer-links { display: flex; gap: 20px; list-style: none; }
+.footer-links a { text-decoration: none; color: #7f8c8d; transition: color 0.2s; }
+.footer-links a:hover { color: #4a90e2; }
+
+/* 개발 확인용 데모 바 */
+.demo-bar { background: #333; color: white; padding: 10px; text-align: center; font-size: 12px; }
+.demo-bar button { margin-left: 10px; padding: 3px 8px; cursor: pointer; }
