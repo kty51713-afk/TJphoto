@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>추억 저장소 - TJphoto</title>
+    <style>
+        /* 기본 스타일 리셋 */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f8f9fa; color: #333; min-height: 100vh; display: flex; flex-direction: column; }
+
+        /* 헤더 네비게이션 바 */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .logo { font-size: 24px; font-weight: bold; color: #4a90e2; cursor: pointer; }
+        
+        /* 중앙 메뉴 */
+        .nav-menu { display: flex; list-style: none; gap: 30px; }
+        .nav-menu a { text-decoration: none; color: #555; font-weight: 500; transition: color 0.2s; }
+        .nav-menu a:hover { color: #4a90e2; }
+        
+        /* 우측 상단 회원 메뉴 */
+        .auth-menu { display: flex; list-style: none; gap: 15px; align-items: center; }
+        .auth-menu a { text-decoration: none; color: #666; font-size: 14px; }
+        .btn-auth { padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500; }
+        .btn-login { background-color: transparent; color: #4a90e2; border: 1px solid #4a90e2; }
+        .btn-login:hover { background-color: #f0f7ff; }
+        .btn-signup { background-color: #4a90e2; color: white !important; }
+        .btn-signup:hover { background-color: #357abd; }
+
+        /* 메인 콘텐츠 영역 */
+        main { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px; }
+        
+        /* 로그인 전: 환영 인사말 카드 */
+        .welcome-container { text-align: center; max-width: 600px; padding: 40px; background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .welcome-container h1 { font-size: 32px; color: #2c3e50; margin-bottom: 20px; }
+        .welcome-container p { font-size: 16px; color: #7f8c8d; line-height: 1.6; margin-bottom: 30px; }
+        
+        /* 접근 제한 경고 스타일 (HTML 미리 비활성화 설정용 속성) */
+        .disabled-menu { opacity: 0.5; cursor: not-allowed !important; pointer-events: none; }
+        
+        /* [테스트용 데모 콘솔] 로그인 상태를 토글해볼 수 있는 버튼 바 */
+        .demo-bar { background: #333; color: white; padding: 10px; text-align: center; font-size: 12px; }
+        .demo-bar button { margin-left: 10px; padding: 3px 8px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <!-- 개발 확인용 데모 바 (실제 서비스 시 삭제 가능) -->
+    <div class="demo-bar">
+        현재 상태: <span id="status-text" style="color: #ff6b6b; font-weight: bold;">로그인 전 (메뉴 차단됨)</span>
+        <button onclick="toggleLogin()">로그인 상태 가상 토글</button>
+    </div>
+
+    <!-- 헤더 영역 -->
+    <header>
+        <div class="logo">TJphoto</div>
+        
+        <!-- 중앙 메뉴: 로그인 전에는 볼 수 없도록 기본값으로 'disabled-menu' 클래스 부여 -->
+        <ul class="nav-menu">
+            <li><a href="#notice" class="auth-required disabled-menu" onclick="alert('로그인이 필요한 서비스입니다.'); return false;">공지사항</a></li>
+            <li><a href="#gallery" class="auth-required disabled-menu" onclick="alert('로그인이 필요한 서비스입니다.'); return false;">사진첩</a></li>
+        </ul>
+        
+        <!-- 우측 상단 회원 메뉴 -->
+        <ul class="auth-menu">
+            <li><a href="#login" class="btn-auth btn-login">로그인</a></li>
+            <li><a href="#signup" class="btn-auth btn-signup">회원가입</a></li>
+        </ul>
+    </header>
+
+    <!-- 메인 콘텐츠 영역 (화면 가운데 정렬) -->
+    <main>
+        <!-- 로그인 전 노출되는 친절한 인사말 카드 -->
+        <div class="welcome-container" id="welcome-message">
+            <h1>📸 당신의 소중한 순간을 보관하세요</h1>
+            <p>
+                안녕하세요! <strong>TJphoto</strong> 사진첩에 오신 것을 진심으로 환영합니다.<br>
+                저희 서비스는 소중한 일상과 기억을 안전하고 아름답게 기록하는 공간입니다.<br><br>
+                현재 <span style="color: #e74c3c; font-weight: bold;">로그인 전</span> 상태이므로 공지사항 및 사진첩 열람이 제한됩니다.<br>
+                우측 상단의 로그인 또는 회원가입을 통해 더 많은 기능을 이용해 보세요!
+            </p>
+            <a href="#login" class="btn-auth btn-signup" style="display: inline-block;">지금 시작하기</a>
+        </div>
+    </main>
+
+    <script>
+        // 간단한 로그인 상태 토글 함수 (프론트엔드 제어 시각화용)
+        let isLoggedIn = false;
+
+        function toggleLogin() {
+            isLoggedIn = !isLoggedIn;
+            const statusText = document.getElementById('status-text');
+            const welcomeMsg = document.getElementById('welcome-message');
+            const menuItems = document.querySelectorAll('.auth-required');
+
+            if (isLoggedIn) {
+                // 로그인 성공 시 설정 변경
+                statusText.innerText = "로그인 완료 (메뉴 활성화)";
+                statusText.style.color = "#2ecc71";
+                welcomeMsg.innerHTML = "<h1>👋 환영합니다, 회원님!</h1><p>이제 상단 메뉴를 통해 공지사항과 사진첩을 자유롭게 이용하실 수 있습니다.</p>";
+                
+                // 메뉴 차단 해제 및 onclick 경고 제거
+                menuItems.forEach(item => {
+                    item.classList.remove('disabled-menu');
+                    item.removeAttribute('onclick');
+                });
+            } else {
+                // 로그아웃 시 다시 초기 차단 상태로 복구
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
