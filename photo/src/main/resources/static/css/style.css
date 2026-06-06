@@ -53,17 +53,136 @@ footer {
 .demo-bar { background: #333; color: white; padding: 10px; text-align: center; font-size: 12px; }
 .demo-bar button { margin-left: 10px; padding: 3px 8px; cursor: pointer; }
 
-/* 사진 업로드 전용 추가 스타일 (style.css와 조화되도록) */
+
+
+/* 사진 업로드 박스 기본 구성 */
 .upload-box {
     background: white;
     padding: 40px;
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     text-align: center;
+    max-width: 600px;
+    margin: 40px auto;
 }
-.upload-form { margin-top: 20px; }
-.upload-form input { margin-bottom: 20px; display: block; margin-left: auto; margin-right: auto; }
-.upload-form button { 
-    background-color: #4a90e2; color: white; border: none; 
-    padding: 10px 25px; border-radius: 20px; cursor: pointer; 
+
+.upload-form { 
+    margin-top: 20px; 
+}
+
+/* 실제 파일 인풋은 숨김 처리 */
+#fileInput { 
+    display: none; 
+}
+
+/* 드래그 앤 드롭 기본 영역 */
+.drop-zone {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 40px 20px;
+    border: 2px dashed #b3d4fc; 
+    border-radius: 12px; 
+    text-align: center;
+    background-color: #fafafa;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    margin-bottom: 20px;
+}
+
+/* 파일 드래그 오버 시 스타일 변경 */
+.drop-zone.dragover {
+    border-color: #4a90e2; 
+    background-color: rgba(74, 144, 226, 0.08); 
+}
+
+.drop-zone p {
+    margin: 0;
+    color: #555;
+    font-size: 15px;
+}
+
+/* 선택된 파일 목록 컨테이너 */
+.file-list-container {
+    margin-top: 25px;
+    text-align: left;
+    cursor: default; /* 리스트 영역 클릭 시 파일창이 뜨지 않도록 방지 */
+}
+
+/* 파일 목록 헤더 구성 (개수 및 안내 텍스트) */
+.file-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 0 4px;
+}
+
+.file-list-header strong {
+    font-size: 15px;
+    color: #333;
+}
+
+.upload-tip {
+    color: #888;
+    font-size: 12px;
+}
+
+/* 개별 파일 아이템 리스트 */
+.file-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* 개별 파일 삭제(취소) 버튼 */
+.delete-btn {
+    background: #e2e8f0;
+    color: #718096;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    transition: background 0.2s, color 0.2s;
+}
+
+.delete-btn:hover {
+    background: #fee2e2;
+    color: #ef4444; /* 마우스 올리면 부드러운 빨간색으로 변경 */
+}
+
+/* 업로드 버튼 */
+.upload-form button.submit-btn { 
+    background-color: #4a90e2; 
+    color: white; 
+    border: none; 
+    padding: 12px 30px; 
+    border-radius: 24px; 
+    cursor: pointer; 
+    font-size: 15px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+}
+
+.upload-form button.submit-btn:hover {
+    background-color: #357abd;
 }
