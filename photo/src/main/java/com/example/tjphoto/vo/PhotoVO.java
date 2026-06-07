@@ -10,6 +10,9 @@ public class PhotoVO {
     private String title;   // VARCHAR(100) -> String 유지
     private String content; // TEXT -> String 유지
     private Long memberId;  // MySQL BIGINT -> Long으로 변경 및 카멜케이스 적용
-    private LocalDateTime cratedAt;
+    private LocalDateTime createdAt;
+
+    // [추가] 화면 목록에서 대표 이미지 파일명을 매핑하기 위한 필드
+    private String savedName;
 
 }
