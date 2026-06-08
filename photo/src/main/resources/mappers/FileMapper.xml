@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tjphoto.mapper.FileMapper">
+
+    <insert id="insertFiles" parameterType="com.example.tjphoto.vo.FileVO">
+        INSERT INTO file (photo_id, original_name, saved_name)
+        VALUES (#{photoId}, #{originalName}, #{savedName})
+    </insert>
+
+</mapper>
