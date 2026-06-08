@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tjphoto.mapper.PhotoMapper">
+
+    <insert id="insertPhoto" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO photo (title, content, member_id, created_at)
+        VALUES (#{title}, #{content},#{memberId}, NOW())
+    </insert>
+
+   <select id="selectPhotoList" resultType="com.example.tjphoto.vo.PhotoVO">
+        SELECT 
+            p.id, 
+            p.title, 
+            p.content, 
+            p.member_id AS memberId, 
+            p.created_at AS createdAt,
+            /* 자식 테이블(file)에서 해당 게시글의 첫 번째 파일명을 가져와 savedName에 대입 */
+            (SELECT f.saved_name 
+            FROM file f 
+            WHERE f.photo_id = p.id 
+            LIMIT 1) AS savedName
+        FROM photo p
+        ORDER BY p.id DESC
+    </select>
+   
+
+</mapper>

@@ -39,7 +39,7 @@
             <ul class="auth-menu">
                 <!-- [비로그인 상태] 로그인 / 회원가입 버튼 -->
                 <li sec:authorize="isAnonymous()"><a th:href="@{/login}" class="btn-auth btn-login">로그인</a></li>
-                <li sec:authorize="isAnonymous()"><a th:href="@{/signup}" class="btn-auth btn-signup">회원가입</a></li>
+                <li sec:authorize="isAnonymous()"><a th:href="@{/join}" class="btn-auth btn-signup">회원가입</a></li>
                 
                 <!-- [로그인 상태] 마이페이지 / 로그아웃 버튼 -->
                 <li sec:authorize="isAuthenticated()">

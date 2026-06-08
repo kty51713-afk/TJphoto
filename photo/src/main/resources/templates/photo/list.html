@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>TJ Photo - 사진첩 목록</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <header th:replace="~{layout/header :: header}"></header>
+
+    <main>
+        <div class="gallery-header">
+            <h2>전체 사진 목록</h2>
+             <a th:href="@{/photo/upload}" class="btn-auth btn-signup">새 사진 등록</a>
+        </div>
+
+        <div class="photo-grid">
+        
+            <div class="photo-card" th:each="photo : ${photoList}">
+            
+                <div class="card-image">
+                    <img th:src="@{/display(filename=${photo.savedName})}" alt="업로드 이미지">
+                </div>
+                
+                <div class="card-body">
+                    <h3 class="card-title" th:text="${photo.title}">첨부파일 업로드</h3>
+                    <p class="card-content" th:text="${photo.content}">등록된 내용이 없습니다.</p>
+                    <span class="card-date" th:text="${#temporals.format(photo.createdAt, 'yyyy-MM-dd HH:mm')}">2026-06-07 21:05</span>
+                </div>
+            
+            </div>
+    
+        </div>
+    </main>
+
+    <footer th:replace="~{layout/footer :: footer}"></footer>
+
+</body>
+</html>
